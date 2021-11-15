@@ -1,0 +1,401 @@
+<!-- Start of HubSpot Embed Code -->
+  <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/19579412.js"></script>
+<!-- End of HubSpot Embed Code -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZD5J7854F6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZD5J7854F6');
+  gtag('config', 'AW-438639249');
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"> </script>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.0-rc.1/dist/js.cookie.min.js"></script>
+<script>
+var cookieName = 'auth';
+var apiUrl = 'https://api.unmudl.com';
+var baseUrl = 'https://unmudl.com';
+const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+if(typeof Cookies.get(cookieName) !== 'undefined'){
+var user = JSON.parse(decodeURIComponent(Cookies.get(cookieName)));
+document.getElementById('nav-learner-name').innerHTML = user.learner.firstname;
+document.getElementById('cart-count').innerHTML = user.learner.cartCoursesCount;
+if(user.learner.profilePhotoThumbnail && user.learner.profilePhotoThumbnail.length > 0){
+document.getElementById('nav-learner-image').src = apiUrl + user.learner.profilePhotoThumbnail;
+}
+else{
+document.getElementById('nav-learner-image').src = baseUrl + '/images/user@3x-image.png';
+}
+document.getElementById('nav-learner-name-mobile').innerHTML = user.learner.firstname;
+document.getElementById('cart-count-mobile').innerHTML = user.learner.cartCoursesCount;
+document.getElementById('nav-learner-image-mobile').src = apiUrl + user.learner.profilePhotoThumbnail;
+
+document.getElementById('menu-loggedout').style.display = 'none';
+if(vw <= 478){
+document.getElementById('menu-loggedin-mobile').style.display = 'flex';
+}
+else{
+document.getElementById('menu-loggedin').style.display = 'flex';
+}
+}
+else{
+document.getElementById('menu-loggedout').style.display = 'flex';
+document.getElementById('menu-loggedin').style.display = 'none';
+document.getElementById('menu-loggedin-mobile').style.display = 'none';
+}
+
+var preventMouseLeave = false;
+var collegemenuTimer;
+function generateCollegeMenu(data){
+
+  var hoverTimerClg;
+	    $(document).on('mouseenter', '#college-menu', function() {
+    		var $this = $(this);
+    		hoverTimerClg = setTimeout(function() {
+        		$('.employer-mega-menu-containter').hide();
+              	$('.subjects-mega-menu-containter').hide();
+              	$('.college-mega-menu-containter').show();
+              	$('.nav-overlay-close').show();
+                $('.nav-overlay-close').css('opacity', 1);
+      			console.log("mouse enter in college");
+      		}, 500);
+		});
+    
+		$(document).on('mouseleave', '#college-menu', function() {
+    		clearTimeout(hoverTimerClg);
+    		console.log("hover timer cleared");
+		});
+        
+        $(".college-mega-menu-containter").on("mouseleave", function (event) {
+          	window.setTimeout(function() {
+        		$(".college-mega-menu-containter").hide();
+              $('.nav-overlay-close').hide();
+          		console.log("Mouse left college");
+    		}, 400);
+        });
+        
+  
+    if (data.data.colleges.length > 0) {
+      data.data.colleges.map(function (college, index) {
+        $(".college-menu-list").append(
+          '<li class="college-menu-list-item" data-index="' +
+            index +
+            '">' +
+            '<a href="' +
+            college.url +
+            '" class="college-link w-inline-block">' +
+            '<img src="' +
+            college.collegeLogoThumbnail +
+            '" loading="lazy" alt="" class="college-logo-dropdown">' +
+            '<div class="college-name">' +
+            college.title +
+            "</div></a></li>");
+      });
+	}
+    $(".college-menu-list-item").on("mouseenter", function (event) {
+      preventMouseLeave = false;
+      var collegeIndex = $(this).data("index");
+      clearTimeout(collegemenuTimer);
+      
+      collegemenuTimer = setTimeout(function () {
+        $(".college-mega-menu-l2").show();
+        $(".college-mega-menu-l2-courses").empty();
+       $(".college-mega-menu-l2-courses").append(
+                    '<div class="mega-menu-dropdown-heading">' + 'Courses </div>'
+             );
+  					data.data.colleges[collegeIndex].courses.map(function (course) {
+          $(".college-mega-menu-l2-courses").append(
+            '<div class="mega-menu-course">' +
+              '<a href="' +
+              course.url +
+              '" class="course-link w-inline-block">' +
+              '<img src="' +
+              course.coverPhotoThumbnail +
+              '" loading="lazy" alt="" class="_30x30">' +
+              '<div class="name-type"><div class="course-college-name">' +
+              data.data.colleges[collegeIndex].title +
+              "</div>" +
+              '<div class="course-nam">' +
+              course.title +
+              "</div></div></a></div>"
+          );});
+        $(".college-mega-menu-l2-courses").append(
+                    '<div class="mega-menu-course-button">' +
+              '<a href="' +
+              data.data.colleges[collegeIndex].url + '/courses' +
+              '"button button-outline button-small-2 w-button">' +
+            	 "View all Courses </a></div>" ); }, 500);
+    });
+    $(".college-menu-list-item").on("mouseleave", function (event) {
+      setTimeout(function () {
+        if (!preventMouseLeave) {
+          $(".college-mega-menu-l2").hide();
+        }
+      }, 500);
+    });
+    $(".college-mega-menu-l2").on("mouseenter", function (event) {
+      preventMouseLeave = true;
+    });	
+}
+
+  var employermenuTimer;
+function generateEmployerMenu(data){
+	   if (data.data.employers.length > 0) {
+      data.data.employers.map(function (employer, index) {
+        
+        
+		var hoverTimer;
+	    $(document).on('mouseenter', '#employer-menu', function() {
+    		var $this = $(this);
+    		hoverTimer = setTimeout(function() {
+        		$('.employer-mega-menu-containter').show();
+              	$('.subjects-mega-menu-containter').hide();
+              	$('.college-mega-menu-containter').hide();
+              	$('.nav-overlay-close').show();
+                $('.nav-overlay-close').css('opacity', 1);
+      			console.log("mouse enter");
+      		}, 500);
+		});
+    
+		$(document).on('mouseleave', '#employer-menu', function() {
+    		clearTimeout(hoverTimer);
+    		console.log("hover timer cleared");
+		});
+        
+        $(".employer-mega-menu-containter").on("mouseleave", function (event) {
+          	window.setTimeout(function() {
+        		$(".employer-mega-menu-containter").hide();
+                $('.nav-overlay-close').hide();
+          		console.log("Mouse left");
+    		}, 400);
+        });
+        
+     //   $("#employer-menu").on("mouseenter", function (event) {
+       //   employerDropDownTimer = window.setTimeout(function() {
+      //      $(".employer-mega-menu-containter").show();
+     //     console.log("Mouse Entered");
+     //   }, 1000);
+          
+       //   });
+        
+     //   $("#employer-menu").on("mouseleave", function(event){
+     //     console.log("mouse leaves emplyer menu");
+     //        clearTimeout(employerDropDownTimer);
+     //     });
+                               
+        
+  //      $(".employer-mega-menu-containter").on("mouseleave", function (event) {
+  //        	window.setTimeout(function() {
+  //      	$(".employer-mega-menu-containter").hide();
+  //        	console.log("Mouse left");
+   // 	}, 1000);
+          
+       //   });
+         // $(".employer-mega-menu-containter").show();
+       // });
+        $(".employer-menu-list").append(
+          '<li class="employer-menu-list-item" data-index="' +
+            index +
+            '">' +
+            '<a href="' +
+            employer.url +
+            '" class="employer-link w-inline-block">' +
+            '<img src="' +
+            employer.logo +
+            '" loading="lazy" alt="" class="employer-logo-dropdown">' +
+            '<div class="employer-name">' +
+            employer.title +
+            "</div></a></li>"
+        );
+      });
+    }
+    $(".employer-menu-list-item").on("mouseenter", function (event) {
+      preventMouseLeave = false;
+      var employerIndex = $(this).data("index"); 
+      clearTimeout(employermenuTimer);
+      
+      
+      employermenuTimer = setTimeout(function () {
+        $(".employer-mega-menu-l2").show();
+        $(".employer-mega-menu-l2-courses").empty();
+         $(".employer-mega-menu-l2-courses").append(
+                    '<div class="mega-menu-dropdown-heading">' + 'Courses </div>'
+             );
+        data.data.employers[employerIndex].courses.map(function (course) {
+          $(".employer-mega-menu-l2-courses").append(
+            '<div class="mega-menu-course">' +
+              '<a href="' +
+              course.url +
+              '" class="course-link w-inline-block">' +
+              '<img src="' +
+              course.coverPhotoThumbnail +
+              '" loading="lazy" alt="" class="_30x30">' +
+              '<div class="name-type"><div class="course-college-name">' +
+              course.college +
+              "</div>" +
+              '<div class="course-nam">' +
+              course.title +
+              "</div></div></a></div>"
+          );});  $(".employer-mega-menu-l2-courses").append(
+                    '<div class="mega-menu-course-button">' +
+              '<a href="' +
+               data.data.employers[employerIndex].url  +
+              '" class="button button-outline button-small-2 w-button">' +
+            	 "View all Courses </a></div>" ); }, 500);
+    });
+    $(".employer-menu-list-item").on("mouseleave", function (event) {
+      setTimeout(function () {
+        if (!preventMouseLeave) {
+          $(".employer-mega-menu-l2").hide();
+        }
+      }, 500);
+    });
+ 
+  
+    $(".employer-mega-menu-l2").on("mouseenter", function (event) {
+      preventMouseLeave = true;
+    });
+}
+
+var subjectmenuTimer;
+function generateSubjectMenu(data){
+   if (data.data.subjects.length > 0) {
+      data.data.subjects.map(function (subject, index) {
+        
+          var hoverTimerSub;
+        $(document).on('mouseenter', '#subject-menu', function() {
+    		var $this = $(this);
+    		hoverTimerSub = setTimeout(function() {
+        		$('.employer-mega-menu-containter').hide();
+              	$('.subjects-mega-menu-containter').show();
+              	$('.college-mega-menu-containter').hide();
+                $('.nav-overlay-close').show();
+                $('.nav-overlay-close').css('opacity', 1);
+      			console.log("mouse enter in college");
+      		}, 500);
+		});
+    
+		$(document).on('mouseleave', '#subject-menu', function() {
+    		clearTimeout(hoverTimerSub);
+    		console.log("hover timer cleared");
+		});
+        
+        $(".subjects-mega-menu-containter").on("mouseleave", function (event) {
+          	window.setTimeout(function() {
+        		$(".subjects-mega-menu-containter").hide();
+                            	$('.nav-overlay-close').hide();
+          		console.log("Mouse left subject");
+    		}, 400);
+        });
+        
+        
+        $(".subject-menu-list").append(
+          '<li class="subject-menu-list-item" data-index="' +
+            index +
+            '">' +
+            '<a href="' +
+            subject.url +
+            '" class="subject-link w-inline-block">' +
+             subject.title +
+            "</div></a></li>"
+        );
+      });
+    }
+    $(".subject-menu-list-item").on("mouseenter", function (event) {
+      preventMouseLeave = false;
+      var subjectIndex = $(this).data("index");
+      clearTimeout(subjectmenuTimer);
+      
+      subjectmenuTimer = setTimeout(function () {
+        $(".subject-mega-menu-l2").show();
+        $(".subject-mega-menu-l2-courses").empty();
+         $(".subject-mega-menu-l2-courses").append(
+                    '<div class="mega-menu-dropdown-heading">' + 'Courses </div>'
+             );
+        data.data.subjects[subjectIndex].courses.map(function (course) {
+          $(".subject-mega-menu-l2-courses").append(
+            '<div class="mega-menu-course">' +
+              '<a href="' +
+              course.url +
+              '"class="course-link w-inline-block">' +
+              '<img src="' +
+              course.coverPhotoThumbnail +
+              '"loading="lazy" alt="" class="_30x30">' +
+              '<div class="name-type"><div class="course-college-name">' +
+                course.college +
+              "</div>" +
+              '<div class="course-nam">' +
+              course.title +
+              "</div></div></a></div>"
+          ); }); $(".subject-mega-menu-l2-courses").append(
+                    '<div class="mega-menu-course-button">' +
+              '<a href="' +
+                data.data.subjects[subjectIndex].url  +
+              '" button button-outline button-small-2 w-button">' +
+            	 "View all Courses </a></div>" ); }, 500);
+    });
+    $(".subject-menu-list-item").on("mouseleave", function (event) {
+      setTimeout(function () {
+        if (!preventMouseLeave) {
+          $(".subject-mega-menu-l2").hide();
+        }
+      }, 500);});
+    $(".subject-mega-menu-l2").on("mouseenter", function (event) {
+      preventMouseLeave = true;
+    });	
+}
+$(document).ready(function () {
+	var collegeCookie = 'collegesMenu';
+	if(sessionStorage.getItem(collegeCookie)){
+		var collegeMenuData = JSON.parse(sessionStorage.getItem(collegeCookie));
+		generateCollegeMenu(collegeMenuData);
+	}
+	else{
+	  $.get(apiUrl + "/webflow-apis/colleges?page=1&perPage=10", function (data) {
+		  sessionStorage.setItem(collegeCookie, JSON.stringify(data));
+		  generateCollegeMenu(data);
+		});	
+	}
+	var employerCookie = 'employersMenu';
+	if(sessionStorage.getItem(employerCookie)){
+		var employerMenuData = JSON.parse(sessionStorage.getItem(employerCookie));
+		generateEmployerMenu(employerMenuData);
+	}
+	else{
+	  $.get(apiUrl + "/webflow-apis/employers?page=1&perPage=10", function (data) {
+		  sessionStorage.setItem(employerCookie, JSON.stringify(data));
+		  generateEmployerMenu(data);
+		});	
+	}
+	var subjectCookie = 'subjectsMenu';
+	if(sessionStorage.getItem(subjectCookie)){
+		var subjectMenuData = JSON.parse(sessionStorage.getItem(subjectCookie));
+		generateSubjectMenu(subjectMenuData);
+	}
+	else{
+	  $.get(apiUrl + "/webflow-apis/subjects?page=1&perPage=10", function (data) {
+		  sessionStorage.setItem(subjectCookie, JSON.stringify(data));
+		  generateSubjectMenu(data);
+		});	
+	}
+}); 
+  
+  $(".employer-slider-mask").append($(".employer-slider-mask").children().sort(function () {
+    return Math.random() - 0.5;
+}));	
+
+</script>
+
+
+<style>
+  .button:current {
+  background-color: #532a6e;
+  color: #fff;
+}
+}
+</style>
+
