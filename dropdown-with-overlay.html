@@ -57,24 +57,21 @@ function generateCollegeMenu(data){
     		var $this = $(this);
     		hoverTimerClg = setTimeout(function() {
         		$('.employer-mega-menu-containter').hide();
-              	$('.subjects-mega-menu-containter').hide();
-              	$('.college-mega-menu-containter').show();
-              	$('.nav-overlay-close').show();
-                $('.nav-overlay-close').css('opacity', 1);
-      			console.log("mouse enter in college");
+              		$('.subjects-mega-menu-containter').hide();
+              		$('.college-mega-menu-containter').show();
+              		$('.nav-overlay-close').show();
+                	$('.nav-overlay-close').css('opacity', 1);
       		}, 500);
 		});
     
 		$(document).on('mouseleave', '#college-menu', function() {
     		clearTimeout(hoverTimerClg);
-    		console.log("hover timer cleared");
 		});
         
         $(".college-mega-menu-containter").on("mouseleave", function (event) {
           	window.setTimeout(function() {
         		$(".college-mega-menu-containter").hide();
               $('.nav-overlay-close').hide();
-          		console.log("Mouse left college");
     		}, 400);
         });
         
@@ -157,46 +154,20 @@ function generateEmployerMenu(data){
               	$('.college-mega-menu-containter').hide();
               	$('.nav-overlay-close').show();
                 $('.nav-overlay-close').css('opacity', 1);
-      			console.log("mouse enter");
       		}, 500);
 		});
     
 		$(document).on('mouseleave', '#employer-menu', function() {
     		clearTimeout(hoverTimer);
-    		console.log("hover timer cleared");
 		});
         
         $(".employer-mega-menu-containter").on("mouseleave", function (event) {
           	window.setTimeout(function() {
         		$(".employer-mega-menu-containter").hide();
                 $('.nav-overlay-close').hide();
-          		console.log("Mouse left");
     		}, 400);
         });
         
-     //   $("#employer-menu").on("mouseenter", function (event) {
-       //   employerDropDownTimer = window.setTimeout(function() {
-      //      $(".employer-mega-menu-containter").show();
-     //     console.log("Mouse Entered");
-     //   }, 1000);
-          
-       //   });
-        
-     //   $("#employer-menu").on("mouseleave", function(event){
-     //     console.log("mouse leaves emplyer menu");
-     //        clearTimeout(employerDropDownTimer);
-     //     });
-                               
-        
-  //      $(".employer-mega-menu-containter").on("mouseleave", function (event) {
-  //        	window.setTimeout(function() {
-  //      	$(".employer-mega-menu-containter").hide();
-  //        	console.log("Mouse left");
-   // 	}, 1000);
-          
-       //   });
-         // $(".employer-mega-menu-containter").show();
-       // });
         $(".employer-menu-list").append(
           '<li class="employer-menu-list-item" data-index="' +
             index +
@@ -275,20 +246,17 @@ function generateSubjectMenu(data){
               	$('.college-mega-menu-containter').hide();
                 $('.nav-overlay-close').show();
                 $('.nav-overlay-close').css('opacity', 1);
-      			console.log("mouse enter in college");
       		}, 500);
 		});
     
 		$(document).on('mouseleave', '#subject-menu', function() {
     		clearTimeout(hoverTimerSub);
-    		console.log("hover timer cleared");
 		});
         
         $(".subjects-mega-menu-containter").on("mouseleave", function (event) {
           	window.setTimeout(function() {
         		$(".subjects-mega-menu-containter").hide();
                             	$('.nav-overlay-close').hide();
-          		console.log("Mouse left subject");
     		}, 400);
         });
         
